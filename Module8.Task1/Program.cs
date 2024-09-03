@@ -9,34 +9,26 @@ namespace Module8.Task1
         const string path = "D:\\Module8Task1";
         public static void GetFoldersAndDelete(string _path)
         {
-            if (Directory.Exists(_path))
+            string[] dirs = Directory.GetDirectories(_path);
+            foreach (string dir in dirs)
             {
-                string[] dirs = Directory.GetDirectories(_path);
-                foreach (string dir in dirs)
+                Console.WriteLine(dir);
+                DirectoryInfo directoryInfo = new DirectoryInfo(dir);
+                Console.WriteLine($"Время последнего изменения: {directoryInfo.LastWriteTime}");
+                TimeSpan interval = DateTime.Now.Subtract(directoryInfo.LastWriteTime);
+                if ((int)interval.TotalMinutes > 30)
                 {
-                    Console.WriteLine(dir);
-                    DirectoryInfo directoryInfo = new DirectoryInfo(dir);
-                    Console.WriteLine($"Время последнего изменения: {directoryInfo.LastWriteTime}");
-                    TimeSpan interval = DateTime.Now.Subtract(directoryInfo.LastWriteTime);
-                    if ((int)interval.TotalMinutes > 30)
-                    {
-                        Console.WriteLine($"Папку: *{directoryInfo.Name}* расположенную по адресу *{directoryInfo.Parent}* можно будет удалять");
-                        directoryInfo.Delete(true);
-                    }
-                    Console.WriteLine($"Интервал равен: {(int)interval.TotalMinutes} минут");
-                    Console.WriteLine();
-                    GetFoldersAndDelete(dir);
+                    Console.WriteLine($"Папку: *{directoryInfo.Name}* расположенную по адресу *{directoryInfo.Parent}* можно будет удалять");
+                    directoryInfo.Delete(true);
+                    continue;
                 }
-            }
-            else 
-            {
-                Console.WriteLine("Неверно задан путь к папке");
+                Console.WriteLine($"Интервал равен: {(int)interval.TotalMinutes} минут");
+                Console.WriteLine();
+                GetFoldersAndDelete(dir);
             }
         }
         public static void GetFilesAndDelete(string _path)
         {
-            if (Directory.Exists(_path))
-            {
                 string[] files = Directory.GetFiles(path, ".", SearchOption.AllDirectories);
                 if (files.Length > 0)
                 {
@@ -58,19 +50,20 @@ namespace Module8.Task1
                 {
                     Console.WriteLine("Файлы отсутствуют!");
                 }
-            }
-            else
-            {
-                Console.WriteLine("Неверно задан путь к папке");
-            }
         }
         static void Main(string[] args)
         {
             try
             {
-                Console.WriteLine("Папки: ");
-                GetFoldersAndDelete(path);
-
+                if (Directory.Exists(path))
+                {
+                    Console.WriteLine("Папки: ");
+                    GetFoldersAndDelete(path);
+                }
+                else
+                {
+                    Console.WriteLine("Неверно задан путь к папке");
+                }
             }
             catch (Exception e)
             {
@@ -80,8 +73,16 @@ namespace Module8.Task1
             Console.WriteLine();
             try
             {
-                Console.WriteLine("Файлы: ");
-                GetFilesAndDelete(path);
+                if (Directory.Exists(path))
+                {
+                    Console.WriteLine("Файлы: ");
+                    GetFilesAndDelete(path);
+                }
+                else
+                {
+                    Console.WriteLine("Неверно задан путь к папке");
+                }
+                
             }
             catch (Exception e)
             {
