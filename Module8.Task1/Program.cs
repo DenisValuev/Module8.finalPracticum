@@ -18,7 +18,7 @@ namespace Module8.Task1
                 TimeSpan interval = DateTime.Now.Subtract(directoryInfo.LastWriteTime);
                 if ((int)interval.TotalMinutes > 30)
                 {
-                    Console.WriteLine($"Папку: *{directoryInfo.Name}* расположенную по адресу *{directoryInfo.Parent}* можно будет удалять");
+                    Console.WriteLine($"Папка: *{directoryInfo.Name}*, расположенная по адресу *{directoryInfo.Parent}*, удалена");
                     directoryInfo.Delete(true);
                     continue;
                 }
@@ -40,7 +40,8 @@ namespace Module8.Task1
                         TimeSpan interval = DateTime.Now.Subtract(fileInfo.LastWriteTime);
                         if ((int)interval.TotalMinutes > 30)
                         {
-                            Console.WriteLine($"Файл *{fileInfo.Name}* расположенный по адресу *{fileInfo.Directory}* можно будет удалить");
+                            Console.WriteLine($"Файл *{fileInfo.Name}*, расположенный по адресу *{fileInfo.Directory}*, удален");
+                            fileInfo.Delete();
                         }
                         Console.WriteLine($"Интервал равен: {(int)interval.TotalMinutes} минут");
                         Console.WriteLine();
