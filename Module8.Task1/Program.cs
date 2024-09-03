@@ -21,6 +21,7 @@ namespace Module8.Task1
                     if ((int)interval.TotalMinutes > 30)
                     {
                         Console.WriteLine($"Папку: *{directoryInfo.Name}* расположенную по адресу *{directoryInfo.Parent}* можно будет удалять");
+                        directoryInfo.Delete(true);
                     }
                     Console.WriteLine($"Интервал равен: {(int)interval.TotalMinutes} минут");
                     Console.WriteLine();
